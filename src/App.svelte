@@ -2,6 +2,7 @@
   import { tick } from 'svelte'
   import { posts, index } from './store'
 
+  import Header from './Header.svelte'
   import Card from './Card.svelte'
   import Spinner from './Spinner.svelte'
 
@@ -24,6 +25,8 @@
   $: isShowOne = $index != undefined
 </script>
 
+<Header --width="1240px" --background="#222" --color={'white'} />
+
 <main>
   {#if isShowAll}
     {#each $posts as post, idx}
@@ -43,7 +46,7 @@
     box-sizing: border-box;
   }
   :global(body) {
-    padding: 2rem;
+    padding: 0;
     background-image: linear-gradient(320deg, #f27121, #e94057, #8a2387);
     background-attachment: fixed;
   }
@@ -52,7 +55,7 @@
     grid-template-columns: repeat(auto-fit, minmax(18em, 1fr));
     gap: 3rem;
     max-width: 1240px;
-    margin: auto;
-    padding-block: 2rem;
+    margin-inline: auto;
+    padding-block: 4rem;
   }
 </style>
