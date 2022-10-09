@@ -19,17 +19,22 @@
     await tick()
     scrollToLastScrollY()
   }
+
+  $: isShowAll = $index == undefined
+  $: isShowOne = $index != undefined
 </script>
 
 <main>
-  {#if $index == undefined}
+  {#if isShowAll}
     {#each $posts as post, idx}
       <Card {post} on:click={() => showSinglePost(idx)} />
     {:else}
       <Spinner />
     {/each}
-  {:else}
-    <Card post={$posts[$index]} isSingle={true} on:click={() => backToHome()} />
+  {/if}
+
+  {#if isShowOne}
+    <Card post={$posts[$index]} on:click={() => backToHome()} isSingle={true} />
   {/if}
 </main>
 

@@ -11,6 +11,7 @@
   const fullImage = mediaSizes.full?.source_url
 
   let backButton
+
   const handleKeydown = evt => evt.key === 'ArrowLeft' && backButton.click()
 
   isSingle && scrollTo(0, 0)
@@ -31,6 +32,7 @@
       <h2 class="link" on:click>{@html title}</h2>
       <div>{@html excerpt}</div>
     </div>
+
     <button on:click>Read More &raquo;</button>
   {/if}
 

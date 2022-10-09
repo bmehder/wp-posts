@@ -8,4 +8,4 @@ const URL = 'https://restorefirsthealth.com/wp-json/wp/v2/posts?per_page=32&_emb
 fetch(URL)
   .then(res => res.json())
   .then(data => posts.set(data))
-  .catch(error => console.log(error))
+  .catch(error => console.error(error))
