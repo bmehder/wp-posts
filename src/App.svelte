@@ -7,31 +7,29 @@
 
   let lastScrollY
 
-  const handleGoToSingle = idx => {
+  const showSinglePost = idx => {
     lastScrollY = window.pageYOffset
     $index = idx
   }
 
-  const handleBackToHome = async () => {
+  const scrollToLastScrollY = () => scrollTo({ top: lastScrollY, left: 0 })
+
+  const backToHome = async () => {
     $index = null
     await tick()
-    scrollTo({
-      top: lastScrollY,
-      left: 0,
-      // behavior: 'smooth',
-    })
+    scrollToLastScrollY()
   }
 </script>
 
 <main>
-  {#if $index != undefined}
-    <Card post={$posts[$index]} isSingle={true} on:click={() => handleBackToHome()} />
-  {:else}
+  {#if $index == undefined}
     {#each $posts as post, idx}
-      <Card {post} on:click={() => handleGoToSingle(idx)} />
+      <Card {post} on:click={() => showSinglePost(idx)} />
     {:else}
-      <p><Spinner />.</p>
+      <Spinner />
     {/each}
+  {:else}
+    <Card post={$posts[$index]} isSingle={true} on:click={() => backToHome()} />
   {/if}
 </main>
 

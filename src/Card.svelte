@@ -3,7 +3,6 @@
   export let post
 
   const title = post.title.rendered
-  // const excerpt = post.excerpt.rendered.split(' ').slice(0, 25).join(' ')
   const excerpt = post.excerpt.rendered
   const content = post.content.rendered
   const mediaSizes = post._embedded['wp:featuredmedia']['0']?.media_details.sizes
@@ -11,39 +10,37 @@
   const largeImage = mediaSizes.large?.source_url
   const fullImage = mediaSizes.full?.source_url
 
-  isSingle &&
-    scrollTo({
-      top: 0,
-      left: 0,
-      // behavior: 'smooth',
-    })
+  let backButton
+  const handleKeydown = evt => evt.key === 'ArrowLeft' && backButton.click()
+
+  isSingle && scrollTo(0, 0)
 </script>
 
-<article>
-  {#if isSingle}
-    <button on:click>&laquo; Go Back</button>
-    <!-- {#if largeImage}
-      <img src={largeImage} alt={title} />
-    {:else}
-      <img src={fullImage} alt={title} />
-    {/if} -->
-    <h2>{@html title}</h2>
-    <div>{@html content}</div>
-    <button on:click>&laquo; Go Back</button>
-  {/if}
+<svelte:window on:keydown={handleKeydown} />
 
+<article>
   {#if !isSingle}
     <div>
       {#if mediumImage}
         <img class="link" loading="lazy" src={mediumImage} alt={title} on:click />
+      {:else if largeImage}
+        <img class="link" loading="lazy" src={largeImage} alt={title} on:click />
       {:else}
-        <!-- No medium image for some reason -->
         <img class="link" loading="lazy" src={fullImage} alt={title} on:click />
       {/if}
       <h2 class="link" on:click>{@html title}</h2>
       <div>{@html excerpt}</div>
     </div>
     <button on:click>Read More &raquo;</button>
+  {/if}
+
+  {#if isSingle}
+    <button bind:this={backButton} on:click>&laquo; Go Back</button>
+
+    <h2>{@html title}</h2>
+    <div>{@html content}</div>
+
+    <button on:click>&laquo; Go Back</button>
   {/if}
 </article>
 
@@ -70,6 +67,7 @@
     text-decoration: underline;
   }
   img {
+    margin-bottom: 1.5rem;
     aspect-ratio: 1;
   }
   .link,
@@ -82,13 +80,16 @@
     background-color: #8a2387;
     color: white;
   }
-  /* button + img {
-    margin-top: 1.5rem;
-  } */
   :global(img) {
     display: block;
     width: 100%;
+    height: auto;
     object-fit: cover;
+  }
+  article :global(figure),
+  article :global(h2) {
+    margin: 0;
+    padding: 0;
   }
   article :global(p),
   article :global(li) {
